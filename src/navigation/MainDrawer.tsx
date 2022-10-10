@@ -6,6 +6,8 @@ import {
   ProgrammerScreen,
   GraphingScreen,
   DateCalculationScreen,
+  ConverterBase,
+  Settings,
 } from '../screens';
 import {MainDrawerContent} from './MainDrawerContent';
 
@@ -21,6 +23,8 @@ export const MainDrawer = () => {
       <Drawer.Screen name="Programmer" component={ProgrammerScreen} />
       <Drawer.Screen name="Graphing" component={GraphingScreen} />
       <Drawer.Screen name="DateCalculation" component={DateCalculationScreen} />
+      <Drawer.Screen name="ConverterBase" component={ConverterBase} />
+      <Drawer.Screen name="Settings" component={Settings} />
     </Drawer.Navigator>
   );
 };
