@@ -1,26 +1,41 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {styles} from '../../theme/globalStyles';
 import {StyledButton} from '../../components/StyledButton';
 import {DrawerScreenProps} from '@react-navigation/drawer';
 import {RootDrawerParamList} from '../../navigation/MainDrawer';
 import {Measures} from '../converter/units';
-
+import {SheetManager} from 'react-native-actions-sheet';
+import Icon from 'react-native-vector-icons/Ionicons';
 type Props = DrawerScreenProps<RootDrawerParamList, 'ConverterBase'>;
 
 const ConverterBase = ({route, navigation}: Props) => {
   const measure = route.params.measure;
   useEffect(() => {
     navigation.setOptions({title: measure});
-  }, [measure]);
+  }, [measure, navigation]);
 
   return (
     <View style={styles.container}>
       <View style={localStyles.displayContainer}>
         <Text style={styles.title1}>0</Text>
-        <Text style={styles.title2}>{Measures[measure][0]}</Text>
+        <TouchableOpacity
+          style={styles.row}
+          onPress={() =>
+            SheetManager.show('converter-picker', {payload: {measure}})
+          }>
+          <Text style={styles.title2}>{Measures[measure][0]}</Text>
+          <Icon name="chevron-down-outline" size={18} color="grey" />
+        </TouchableOpacity>
         <Text style={styles.title1}>0</Text>
-        <Text style={styles.title2}>{Measures[measure][1]}</Text>
+        <TouchableOpacity
+          style={styles.row}
+          onPress={() =>
+            SheetManager.show('converter-picker', {payload: {measure}})
+          }>
+          <Text style={styles.title2}>{Measures[measure][1]}</Text>
+          <Icon name="chevron-down-outline" size={18} color="grey" />
+        </TouchableOpacity>
       </View>
       <View style={styles.row}>
         <StyledButton
