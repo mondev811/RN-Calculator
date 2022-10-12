@@ -32,9 +32,9 @@ export const StyledButton = ({
       height = 50;
       break;
     case 3:
-      fontSize = 15;
-      width = 120;
-      height = 60;
+      fontSize = 18;
+      width = 110;
+      height = 50;
       break;
     case 4:
       fontSize = 18;

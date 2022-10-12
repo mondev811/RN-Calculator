@@ -58,7 +58,16 @@ const Data: Array<NavigationData> = [
 const Item = ({item, drawerContentProps}: ItemProps) => (
   <TouchableOpacity
     style={styles.itemContainer}
-    onPress={() => drawerContentProps.navigation.navigate(item.screen)}>
+    onPress={() => {
+      drawerContentProps.navigation.navigate(
+        item.screen,
+        item.screen === 'ConverterBase'
+          ? {
+              measure: item.title,
+            }
+          : undefined,
+      );
+    }}>
     <Icon name={item.icon} size={18} color="grey" />
     <Text style={styles.itemText}>{item.title}</Text>
   </TouchableOpacity>

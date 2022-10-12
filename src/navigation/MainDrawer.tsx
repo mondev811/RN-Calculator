@@ -10,8 +10,19 @@ import {
   StandardScreen,
 } from '../screens';
 import {MainDrawerContent} from './MainDrawerContent';
+import {Measures} from '../screens/converter/units';
 
-const Drawer = createDrawerNavigator();
+export type RootDrawerParamList = {
+  Standard: undefined;
+  Scientific: undefined;
+  Programmer: undefined;
+  Graphing: undefined;
+  DateCalculation: undefined;
+  ConverterBase: {measure: keyof typeof Measures};
+  Settings: undefined;
+};
+
+const Drawer = createDrawerNavigator<RootDrawerParamList>();
 
 export const MainDrawer = () => {
   return (
@@ -23,7 +34,11 @@ export const MainDrawer = () => {
       <Drawer.Screen name="Programmer" component={ProgrammerScreen} />
       <Drawer.Screen name="Graphing" component={GraphingScreen} />
       <Drawer.Screen name="DateCalculation" component={DateCalculationScreen} />
-      <Drawer.Screen name="ConverterBase" component={ConverterBase} />
+      <Drawer.Screen
+        name="ConverterBase"
+        component={ConverterBase}
+        initialParams={{measure: 'Currency'}}
+      />
       <Drawer.Screen name="Settings" component={Settings} />
     </Drawer.Navigator>
   );
