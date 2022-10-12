@@ -1,6 +1,9 @@
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import ActionSheet, {SheetProps} from 'react-native-actions-sheet';
+import ActionSheet, {
+  SheetManager,
+  SheetProps,
+} from 'react-native-actions-sheet';
 import {Measures} from '../converter/units';
 
 const ConverterActionSheet = (
@@ -14,7 +17,11 @@ const ConverterActionSheet = (
     <ActionSheet id={props.sheetId}>
       <ScrollView style={styles.container}>
         {list.map(item => (
-          <TouchableOpacity onPress={() => setSelectedItem(item)}>
+          <TouchableOpacity
+            onPress={() => {
+              setSelectedItem(item);
+              SheetManager.hide(props.sheetId, {payload: item});
+            }}>
             {selectedItem === item && (
               <Text style={{...styles.text, ...styles.selected}}>{item}</Text>
             )}

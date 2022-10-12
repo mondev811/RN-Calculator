@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from '../../theme/globalStyles';
 import {StyledButton} from '../../components/StyledButton';
 import {DrawerScreenProps} from '@react-navigation/drawer';
@@ -7,39 +7,53 @@ import {RootDrawerParamList} from '../../navigation/MainDrawer';
 import {Measures} from '../converter/units';
 import {SheetManager} from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/Ionicons';
+
 type Props = DrawerScreenProps<RootDrawerParamList, 'ConverterBase'>;
+type DropDownProps = {
+  type: 'input1' | 'input2';
+};
 
 const ConverterBase = ({route, navigation}: Props) => {
   const measure = route.params.measure;
+  const initSelected1 = Measures[measure][3];
+  const initSelected2 = Measures[measure][0];
+  const [selected1, setSelected1] = useState(initSelected1);
+  const [selected2, setSelected2] = useState(initSelected2);
+
   useEffect(() => {
     navigation.setOptions({title: measure});
-  }, [measure, navigation]);
+    setSelected1(initSelected1);
+    setSelected2(initSelected2);
+  }, [measure, navigation, initSelected1, initSelected2]);
+
+  const DropDown = ({type}: DropDownProps) => {
+    const selected = type === 'input1' ? selected1 : selected2;
+    return (
+      <TouchableOpacity
+        style={localStyles.pickList}
+        onPress={async () => {
+          const selection: string = await SheetManager.show(
+            'converter-picker',
+            {
+              payload: {measure, selected},
+            },
+          );
+          type === 'input1' && setSelected1(selection);
+          type === 'input2' && setSelected2(selection);
+        }}>
+        <Text style={styles.title2}>{selected}</Text>
+        <Icon name="chevron-down-outline" size={18} color="grey" />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <View style={localStyles.displayContainer}>
         <Text style={styles.title1}>0</Text>
-        <TouchableOpacity
-          style={localStyles.pickList}
-          onPress={() =>
-            SheetManager.show('converter-picker', {
-              payload: {measure, selected: Measures[measure][0]},
-            })
-          }>
-          <Text style={styles.title2}>{Measures[measure][0]}</Text>
-          <Icon name="chevron-down-outline" size={18} color="grey" />
-        </TouchableOpacity>
+        <DropDown type={'input1'} />
         <Text style={styles.title1}>0</Text>
-        <TouchableOpacity
-          style={localStyles.pickList}
-          onPress={() =>
-            SheetManager.show('converter-picker', {
-              payload: {measure, selected: Measures[measure][1]},
-            })
-          }>
-          <Text style={styles.title2}>{Measures[measure][1]}</Text>
-          <Icon name="chevron-down-outline" size={18} color="grey" />
-        </TouchableOpacity>
+        <DropDown type={'input2'} />
       </View>
       <View style={styles.row}>
         <StyledButton
