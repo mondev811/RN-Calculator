@@ -1,13 +1,13 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {
-  StandardScreen,
-  ScientificScreen,
-  ProgrammerScreen,
-  GraphingScreen,
-  DateCalculationScreen,
   ConverterBase,
+  DateCalculationScreen,
+  GraphingScreen,
+  ProgrammerScreen,
+  ScientificScreen,
   Settings,
+  StandardScreen,
 } from '../screens';
 import {MainDrawerContent} from './MainDrawerContent';
 

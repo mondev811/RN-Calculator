@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
-  DrawerContentScrollView,
   DrawerContentComponentProps,
+  DrawerContentScrollView,
 } from '@react-navigation/drawer';
 
 type NavigationItem = {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   itemContainer: {flexDirection: 'row', height: 40, marginLeft: 5},
   itemText: {marginLeft: 10},
   separator: {
-    backgroundColor: 'grey',
+    backgroundColor: '#D8D7D6',
     width: '100%',
     height: 0.5,
     opacity: 0.5,
