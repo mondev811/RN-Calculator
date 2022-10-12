@@ -20,18 +20,22 @@ const ConverterBase = ({route, navigation}: Props) => {
       <View style={localStyles.displayContainer}>
         <Text style={styles.title1}>0</Text>
         <TouchableOpacity
-          style={styles.row}
+          style={localStyles.pickList}
           onPress={() =>
-            SheetManager.show('converter-picker', {payload: {measure}})
+            SheetManager.show('converter-picker', {
+              payload: {measure, selected: Measures[measure][0]},
+            })
           }>
           <Text style={styles.title2}>{Measures[measure][0]}</Text>
           <Icon name="chevron-down-outline" size={18} color="grey" />
         </TouchableOpacity>
         <Text style={styles.title1}>0</Text>
         <TouchableOpacity
-          style={styles.row}
+          style={localStyles.pickList}
           onPress={() =>
-            SheetManager.show('converter-picker', {payload: {measure}})
+            SheetManager.show('converter-picker', {
+              payload: {measure, selected: Measures[measure][1]},
+            })
           }>
           <Text style={styles.title2}>{Measures[measure][1]}</Text>
           <Icon name="chevron-down-outline" size={18} color="grey" />
@@ -147,5 +151,8 @@ const localStyles = StyleSheet.create({
   displayContainer: {
     marginLeft: 20,
     marginBottom: 40,
+  },
+  pickList: {
+    flexDirection: 'row',
   },
 });

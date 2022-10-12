@@ -23,5 +23,6 @@ export const styles = StyleSheet.create({
   title2: {
     fontSize: 16,
     color: 'black',
+    marginRight: 5,
   },
 });
