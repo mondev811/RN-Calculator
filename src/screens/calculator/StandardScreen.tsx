@@ -68,7 +68,7 @@ export const StandardScreen = () => {
         <StyledButton
           size={2}
           style="dark"
-          text="icon"
+          icon="backspace-outline"
           action={() => console.log('pressed')}
         />
       </View>

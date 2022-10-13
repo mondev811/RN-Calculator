@@ -1,10 +1,12 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export type StyledButtonProps = {
   size: 1 | 2 | 3 | 4;
   style: 'light' | 'dark' | 'highlight' | 'clear';
-  text: string;
+  text?: string;
+  icon?: string;
   action: () => void;
 };
 
@@ -12,6 +14,7 @@ export const StyledButton = ({
   size,
   style,
   text,
+  icon,
   action,
 }: StyledButtonProps) => {
   let fontSize: number = 0;
@@ -80,7 +83,8 @@ export const StyledButton = ({
 
   return (
     <TouchableOpacity style={styles.button} onPress={() => action()}>
-      <Text style={styles.text}>{text}</Text>
+      {text && <Text style={styles.text}>{text}</Text>}
+      {icon && <Icon name={icon} size={fontSize} color={color} />}
     </TouchableOpacity>
   );
 };
