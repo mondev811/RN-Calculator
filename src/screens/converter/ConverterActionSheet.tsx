@@ -18,6 +18,7 @@ const ConverterActionSheet = (
       <ScrollView style={styles.container}>
         {list.map(item => (
           <TouchableOpacity
+            key={item}
             onPress={() => {
               setSelectedItem(item);
               SheetManager.hide(props.sheetId, {payload: item});
