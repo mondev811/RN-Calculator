@@ -1,13 +1,13 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export type StyledButtonProps = {
   size: 1 | 2 | 3 | 4;
-  style: 'light' | 'dark' | 'highlight' | 'clear';
+  style: 'light' | 'dark' | 'highlight' | 'clear' | 'blank-space';
   text?: string;
   icon?: string;
-  action: () => void;
+  action?: () => void;
 };
 
 export const StyledButton = ({
@@ -75,6 +75,12 @@ export const StyledButton = ({
       margin: 2,
       elevation: 1,
     },
+    blank_space: {
+      width,
+      height,
+      margin: 2,
+      backgroundColor: 'transparent',
+    },
     text: {
       fontSize,
       color,
@@ -82,9 +88,14 @@ export const StyledButton = ({
   });
 
   return (
-    <TouchableOpacity style={styles.button} onPress={() => action()}>
-      {text && <Text style={styles.text}>{text}</Text>}
-      {icon && <Icon name={icon} size={fontSize} color={color} />}
-    </TouchableOpacity>
+    <>
+      {style !== 'blank-space' && (
+        <TouchableOpacity style={styles.button} onPress={() => action()}>
+          {text && <Text style={styles.text}>{text}</Text>}
+          {icon && <Icon name={icon} size={fontSize} color={color} />}
+        </TouchableOpacity>
+      )}
+      {style === 'blank-space' && <View style={styles.blank_space} />}
+    </>
   );
 };
