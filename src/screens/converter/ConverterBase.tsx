@@ -4,7 +4,7 @@ import {styles} from '../../theme/globalStyles';
 import {StyledButton} from '../../components/StyledButton';
 import {DrawerScreenProps} from '@react-navigation/drawer';
 import {RootDrawerParamList} from '../../navigation/MainDrawer';
-import {Measures} from '../converter/units';
+import {Measures, Multipliers} from '../converter/units';
 import {SheetManager} from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -19,12 +19,25 @@ const ConverterBase = ({route, navigation}: Props) => {
   const initSelected2 = Measures[measure][0];
   const [selected1, setSelected1] = useState(initSelected1);
   const [selected2, setSelected2] = useState(initSelected2);
+  const [output, setOutputStr] = useState('0');
+  const [inputStr, setInputStr] = useState('0');
 
   useEffect(() => {
     navigation.setOptions({title: measure});
     setSelected1(initSelected1);
     setSelected2(initSelected2);
-  }, [measure, navigation, initSelected1, initSelected2]);
+    setInputStr('0');
+    setOutputStr('0');
+  }, [measure]);
+
+  useEffect(() => {
+    const inputMultiplier = Multipliers[measure][selected1];
+    const outputMultiplier = Multipliers[measure][selected2];
+    let valueFloat = parseFloat(inputStr);
+    const outputFloat = (valueFloat * outputMultiplier) / inputMultiplier;
+    const outputStr = outputFloat.toFixed(6).replace(/[.,]*0+$/, '');
+    setOutputStr(outputStr);
+  }, [selected1, selected2, inputStr]);
 
   const DropDown = ({type}: DropDownProps) => {
     const selected = type === 'input1' ? selected1 : selected2;
@@ -47,12 +60,29 @@ const ConverterBase = ({route, navigation}: Props) => {
     );
   };
 
+  const buildInputValue = (digit: string) => {
+    let valueStr = inputStr;
+
+    if (digit === 'CE') {
+      valueStr = '0';
+      setOutputStr('0');
+    } else if (valueStr.length > 0 && digit === 'R') {
+      valueStr = valueStr.slice(0, -1);
+    } else if (digit === '.') {
+      valueStr = inputStr.includes('.') ? valueStr : valueStr + digit;
+    } else {
+      valueStr = valueStr === '0' ? digit : valueStr + digit;
+    }
+
+    setInputStr(valueStr);
+  };
+
   return (
     <View style={styles.container}>
       <View style={localStyles.displayContainer}>
-        <Text style={styles.title1}>0</Text>
+        <Text style={styles.title1}>{inputStr}</Text>
         <DropDown type={'input1'} />
-        <Text style={styles.title1}>0</Text>
+        <Text style={styles.title1}>{output}</Text>
         <DropDown type={'input2'} />
       </View>
       <View style={styles.row}>
@@ -60,19 +90,19 @@ const ConverterBase = ({route, navigation}: Props) => {
           size={3}
           style="light"
           text=""
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('')}
         />
         <StyledButton
           size={3}
           style="light"
           text="CE"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('CE')}
         />
         <StyledButton
           size={3}
           style="light"
-          text="CE"
-          action={() => console.log('pressed')}
+          icon="backspace-outline"
+          action={() => buildInputValue('R')}
         />
       </View>
       <View style={styles.row}>
@@ -80,19 +110,19 @@ const ConverterBase = ({route, navigation}: Props) => {
           size={3}
           style="light"
           text="7"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('7')}
         />
         <StyledButton
           size={3}
           style="light"
           text="8"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('8')}
         />
         <StyledButton
           size={3}
           style="light"
           text="9"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('9')}
         />
       </View>
       <View style={styles.row}>
@@ -100,19 +130,19 @@ const ConverterBase = ({route, navigation}: Props) => {
           size={3}
           style="light"
           text="4"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('4')}
         />
         <StyledButton
           size={3}
           style="light"
           text="5"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('5')}
         />
         <StyledButton
           size={3}
           style="light"
           text="6"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('6')}
         />
       </View>
       <View style={styles.row}>
@@ -120,19 +150,19 @@ const ConverterBase = ({route, navigation}: Props) => {
           size={3}
           style="light"
           text="1"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('1')}
         />
         <StyledButton
           size={3}
           style="light"
           text="2"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('2')}
         />
         <StyledButton
           size={3}
           style="light"
           text="3"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('3')}
         />
       </View>
       <View style={styles.row}>
@@ -140,19 +170,19 @@ const ConverterBase = ({route, navigation}: Props) => {
           size={3}
           style="light"
           text=""
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('')}
         />
         <StyledButton
           size={3}
           style="light"
           text="0"
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('0')}
         />
         <StyledButton
           size={3}
           style="light"
           text="."
-          action={() => console.log('pressed')}
+          action={() => buildInputValue('.')}
         />
       </View>
     </View>
