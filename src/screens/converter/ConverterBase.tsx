@@ -51,8 +51,8 @@ const ConverterBase = ({route, navigation}: Props) => {
               payload: {measure, selected},
             },
           );
-          type === 'input1' && setSelected1(selection);
-          type === 'input2' && setSelected2(selection);
+          type === 'input1' && selection && setSelected1(selection);
+          type === 'input2' && selection && setSelected2(selection);
         }}>
         <Text style={styles.title2}>{selected}</Text>
         <Icon name="chevron-down-outline" size={18} color="grey" />
@@ -74,7 +74,7 @@ const ConverterBase = ({route, navigation}: Props) => {
       valueStr = valueStr === '0' ? digit : valueStr + digit;
     }
 
-    setInputStr(valueStr);
+    setInputStr(valueStr.length > 0 ? valueStr : '0');
   };
 
   return (
@@ -86,12 +86,7 @@ const ConverterBase = ({route, navigation}: Props) => {
         <DropDown type={'input2'} />
       </View>
       <View style={styles.row}>
-        <StyledButton
-          size={3}
-          style="light"
-          text=""
-          action={() => buildInputValue('')}
-        />
+        <StyledButton size={3} style="blank-space" />
         <StyledButton
           size={3}
           style="light"
@@ -166,12 +161,7 @@ const ConverterBase = ({route, navigation}: Props) => {
         />
       </View>
       <View style={styles.row}>
-        <StyledButton
-          size={3}
-          style="light"
-          text=""
-          action={() => buildInputValue('')}
-        />
+        <StyledButton size={3} style="blank-space" />
         <StyledButton
           size={3}
           style="light"
