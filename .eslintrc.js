@@ -34,6 +34,7 @@ module.exports = {
             ignoreDeclarationSort: true,
           },
         ],
+        'prefer-const': 2,
       },
     },
   ],
