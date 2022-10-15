@@ -1,47 +1,9 @@
-export const Measures = {
-  Currency: [
-    'Europe (Euro)',
-    'Mexico (Peso)',
-    'United Kingdom (Pound)',
-    'United States (Dollar)',
-    'Vietnam (Dong)',
-  ],
-  Length: [
-    'Nanometers',
-    'Microns',
-    'Milimeters',
-    'Centimeters',
-    'Meters',
-    'Kilometers',
-    'Inches',
-    'Feet',
-    'Yards',
-    'Miles',
-    'Nautical miles',
-  ],
-  Volume: [
-    'Mililiters',
-    'Cubic centimeters',
-    'Liters',
-    'Cubic meters',
-    'Teaspoons (US)',
-    'Tablespoons (US)',
-    'Fluid ounces (US)',
-    'Cups (US)',
-    'Pints (US)',
-    'Quarts (US)',
-    'Gallons (US)',
-    'Cubic inches',
-    'Cubic feet',
-    'Cubic yards',
-    'Teaspoons (UK)',
-    'Tablespoons (UK)',
-    'Fluid ounces (UK)',
-    'Pints (UK)',
-    'Quarts (UK)',
-    'Gallons (UK)',
-  ],
-};
+export type Measure = keyof typeof Multipliers;
+
+export type Units =
+  | keyof typeof Multipliers['Currency']
+  | keyof typeof Multipliers['Length']
+  | keyof typeof Multipliers['Volume'];
 
 export const Multipliers = {
   Currency: {

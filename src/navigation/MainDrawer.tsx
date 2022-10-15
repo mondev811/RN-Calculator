@@ -10,7 +10,7 @@ import {
   StandardScreen,
 } from '../screens';
 import {MainDrawerContent} from './MainDrawerContent';
-import {Measures} from '../screens/converter/units';
+import {Measure} from '../screens/converter/units';
 
 export type RootDrawerParamList = {
   Standard: undefined;
@@ -18,7 +18,7 @@ export type RootDrawerParamList = {
   Programmer: undefined;
   Graphing: undefined;
   DateCalculation: undefined;
-  ConverterBase: {measure: keyof typeof Measures};
+  ConverterBase: {measure: Measure};
   Settings: undefined;
 };
 

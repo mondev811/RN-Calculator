@@ -4,9 +4,10 @@ import {styles} from '../../theme/globalStyles';
 import {StyledButton} from '../../components/StyledButton';
 import {DrawerScreenProps} from '@react-navigation/drawer';
 import {RootDrawerParamList} from '../../navigation/MainDrawer';
-import {Measures, Multipliers} from '../converter/units';
+import {Measure, Multipliers, Units} from '../converter/units';
 import {SheetManager} from 'react-native-actions-sheet';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {ConvertUnits, FormatDisplay} from '../../utils/Calculator';
 
 type Props = DrawerScreenProps<RootDrawerParamList, 'ConverterBase'>;
 type DropDownProps = {
@@ -14,45 +15,40 @@ type DropDownProps = {
 };
 
 const ConverterBase = ({route, navigation}: Props) => {
-  const measure = route.params.measure;
-  const initSelected1 = Measures[measure][3];
-  const initSelected2 = Measures[measure][0];
-  const [selected1, setSelected1] = useState(initSelected1);
-  const [selected2, setSelected2] = useState(initSelected2);
+  const measure = route.params.measure as Measure;
+  const initUnits1 = Object.keys(Multipliers[measure])[3] as Units;
+  const initUnits2 = Object.keys(Multipliers[measure])[0] as Units;
+  const [units1, setUnits1] = useState(initUnits1);
+  const [units2, setUnits2] = useState(initUnits2);
   const [output, setOutputStr] = useState('0');
   const [inputStr, setInputStr] = useState('0');
 
   useEffect(() => {
     navigation.setOptions({title: measure});
-    setSelected1(initSelected1);
-    setSelected2(initSelected2);
+    setUnits1(initUnits1);
+    setUnits2(initUnits2);
     setInputStr('0');
     setOutputStr('0');
   }, [measure]);
 
   useEffect(() => {
-    const inputMultiplier = Multipliers[measure][selected1];
-    const outputMultiplier = Multipliers[measure][selected2];
-    let valueFloat = parseFloat(inputStr);
-    const outputFloat = (valueFloat * outputMultiplier) / inputMultiplier;
-    const outputStr = outputFloat.toFixed(6).replace(/[.,]*0+$/, '');
+    const valueFloat = parseFloat(inputStr);
+    const outputFloat = ConvertUnits(measure, units1, units2, valueFloat);
+    const outputStr = FormatDisplay(outputFloat);
     setOutputStr(outputStr);
-  }, [selected1, selected2, inputStr]);
+  }, [units1, units2, inputStr]);
 
   const DropDown = ({type}: DropDownProps) => {
-    const selected = type === 'input1' ? selected1 : selected2;
+    const selected = type === 'input1' ? units1 : units2;
     return (
       <TouchableOpacity
         style={localStyles.pickList}
         onPress={async () => {
-          const selection: string = await SheetManager.show(
-            'converter-picker',
-            {
-              payload: {measure, selected},
-            },
-          );
-          type === 'input1' && selection && setSelected1(selection);
-          type === 'input2' && selection && setSelected2(selection);
+          const selection: Units = await SheetManager.show('converter-picker', {
+            payload: {measure, selected},
+          });
+          type === 'input1' && selection && setUnits1(selection);
+          type === 'input2' && selection && setUnits2(selection);
         }}>
         <Text style={styles.title2}>{selected}</Text>
         <Icon name="chevron-down-outline" size={18} color="grey" />

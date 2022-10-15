@@ -4,13 +4,14 @@ import ActionSheet, {
   SheetManager,
   SheetProps,
 } from 'react-native-actions-sheet';
-import {Measures} from '../converter/units';
+import {Measure, Multipliers, Units} from '../converter/units';
 
 const ConverterActionSheet = (
-  props: SheetProps<{measure: string; selected: string}>,
+  props: SheetProps<{measure: Measure; selected: Units}>,
 ) => {
-  const list = Measures[props.payload?.measure] as Array<string>;
-  const selected = props.payload?.selected as string;
+  const measure = props.payload?.measure as Measure;
+  const list = Object.keys(Multipliers[measure]) as Array<Units>;
+  const selected = props.payload?.selected as Units;
   const [selectedItem, setSelectedItem] = useState(selected);
 
   return (
